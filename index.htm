@@ -16,13 +16,18 @@
 
       <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet'>
 
-      <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.33.1/mapbox-gl.css' rel='stylesheet' />
+      
+          <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.0/mapbox-gl.css' rel='stylesheet' />
       <link rel="stylesheet" href="assets/css/main.css">
       
       <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+      <script src="assets/data/Broad.js"></script>
       <script src="assets/data/proposed_route.js"></script>
-      <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.33.1/mapbox-gl.js'></script>
+      <script src="assets/data/raillines.js"></script>
+
+       <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.0/mapbox-gl.js'></script>
+
 
       
       <style>
@@ -138,6 +143,10 @@
             .menu button:hover {
               background-color:#52a1d8;
               }
+                  .mapboxgl-popup {
+        max-width: 100px;
+        font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    }
       </style>
   </head>
   

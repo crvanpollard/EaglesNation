@@ -1,5 +1,6 @@
   var zoomThreshold = 16;
   var proposed_route;
+  var raillines;
 
   var baseLayers = [{
   label: 'Fly Eagles Fly',
@@ -43,9 +44,9 @@
   // This adds the map
   var map = new mapboxgl.Map({
     // container id specified in the HTML
-    container: "map", 
-  //   style: 'mapbox://styles/mapbox/dark-v9', 
-    style:'mapbox://styles/mapbox/outdoors-v10',
+    container: 'map', 
+     style: 'mapbox://styles/mapbox/dark-v9', 
+  //  style:'mapbox://styles/mapbox/outdoors-v10',
  // style: 'mapbox://styles/crvanpollard/cjdb25by21pbu2rl9pf7jk9xt',
     center: [ -75.172, 39.912293], 
     bearing: 10, // Rotate Philly ~9° off of north, thanks Billy Penn.
@@ -96,6 +97,7 @@
     if (popUps[0]) popUps[0].remove();
   });
 
+
   function addDataLayer() {
     map.addSource('proposed_route', {
       'type': 'geojson',
@@ -104,7 +106,7 @@
 
   map.addLayer({
      "id": "route",
-        "type": "line",
+        "type": "vector",
  'source': 'proposed_route',
         "layout": {
             "line-join": "round",
@@ -112,16 +114,61 @@
         },
         "paint": {
             "line-color": "#F74902",
-        //  "line-color": "#4cbb17",
             "line-width": 5
-         //   "line-dasharray": [2,4],
-         //   "line-color": {
-         //     "type": "identity",
-         //     "property": "color"
-        //   }
         }
   });
 }
+
+// curb cuts layer
+map.on('load', function () {
+
+    map.addLayer({
+        'id': 'Broad',
+        'type': 'circle',
+        'source': {
+            'type': 'geojson',
+            'data': Broad
+        },
+       'paint': {
+            // make circles larger as the user zooms from z12 to z22
+                 'circle-radius': 6,
+             
+  
+            // color circles by ethnicity, using a match expression
+            // https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
+            'circle-color': [
+                'match',
+                ['get', 'EAGLES'],
+                'yes', '#fbb03b',
+                'no', '#223b53',
+                /* other */ '#ccc'
+            ]
+            }
+        });
+
+    // When a click event occurs on a feature in the places layer, open a popup at the
+    // location of the feature, with description HTML from its properties.
+    map.on('click', 'Broad', function (e) {
+        new mapboxgl.Popup()
+            .setLngLat(e.features[0].geometry.coordinates)
+            .setHTML(e.features[0].properties.STATION)
+            .addTo(map);
+    });
+
+    // Change the cursor to a pointer when the mouse is over the places layer.
+    map.on('mouseenter', 'Broad', function () {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'Broad', function () {
+        map.getCanvas().style.cursor = '';
+    });
+
+    });
+
+
+
 
 map.on('style.load', function () {
   // Triggered when `setStyle` is called.
