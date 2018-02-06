@@ -44,8 +44,8 @@
   var map = new mapboxgl.Map({
     // container id specified in the HTML
     container: "map", 
-     style: 'mapbox://styles/mapbox/dark-v9', 
-  //  style:'mapbox://styles/mapbox/outdoors-v10',
+  //   style: 'mapbox://styles/mapbox/dark-v9', 
+    style:'mapbox://styles/mapbox/outdoors-v10',
  // style: 'mapbox://styles/crvanpollard/cjdb25by21pbu2rl9pf7jk9xt',
     center: [ -75.172, 39.912293], 
     bearing: 10, // Rotate Philly ~9° off of north, thanks Billy Penn.
