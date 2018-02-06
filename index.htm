@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="description" content="Dogpatch Block Party and Walk About (2017)">
+      <meta name="author" content="Effortless City">
+      <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+      <title>E-A-G-L-E-S</title>
+
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+      <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet'>
+
+      <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.33.1/mapbox-gl.css' rel='stylesheet' />
+      <link rel="stylesheet" href="assets/css/main.css">
+      
+      <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+      <script src="assets/data/proposed_route.js"></script>
+      <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.33.1/mapbox-gl.js'></script>
+
+      
+      <style>
+      .marker{
+          border: none;
+          cursor: pointer;
+          background-size: 22px 22px;
+          background-repeat: no-repeat;
+          transform: translate(28px, 56px, 0);
+        }
+         .marker2 {
+          border: none;
+         /* cursor: pointer; */
+          background-size: 40px 40px;
+          background-repeat: no-repeat;
+          transform: translate(28px, 56px, 0);
+        }
+         .marker2a {
+          border: none;
+         /* cursor: pointer; */
+          background-size: 32px 32px;
+          background-repeat: no-repeat;
+          transform: translate(28px, 56px, 0);
+        }
+        .marker3 {
+          border: none;
+          background-size: 22px 22px;
+          background-repeat: no-repeat;
+          transform: translate(28px, 56px, 0);
+        }
+        #export{
+            position: absolute;
+            top:110px;
+            left:26px;
+            z-index:100;
+            background-color:white;
+            color:black;
+            padding:6px;
+            border-radius:4px;
+            font-family: 'Helvetica Neue';
+            cursor: pointer;
+            font-size:12px;
+            text-decoration:none;
+            background-image: url(https://raw.githubusercontent.com/crvanpollard/ragnar_pa/master/assets/img/kitt.png);
+            background-size: 60px 35px;
+             background-position: center; 
+            background-repeat: no-repeat;
+            height: 35px;
+            width: 60px;
+          }
+          #export:hover{
+            background-color: #ddd;
+          }
+          .legend {
+            background-color: #fff;
+            border-radius: 3px;
+            bottom: 40px;
+            right: 20px;
+            width: 120px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            opacity: .95;
+            }
+            .legend h4 {
+            margin: 0 0 10px;
+            }
+            .legend div span {
+            border-radius: 50%;
+            display: inline-block;
+            height: 10px;
+            margin-right: 5px;
+            width: 10px;
+            }
+            .legend div span2 {
+            display: inline-block;
+            height: 5px;
+            margin-right: 5px;
+            width: 40px;
+            }
+             .menu {
+            position:absolute;
+            z-index:99;
+            top: 10px;
+            right: 40px;
+            border-radius:3px;
+            width:120px;
+            }
+          .menu button {
+            font:13px/20px 'Helvetica Neue', sans-serif;
+            background:#4c4d4f;
+            color:#fff;
+            display:block;
+            width: 140px;
+            height:30px;
+            margin:0;
+            padding:0;
+            padding:1px;
+            border:none;
+            border-bottom:1px solid rgba(0,0,0,0.25);
+            cursor:pointer;
+            }
+            .menu button:first-child {
+              border-radius:3px 3px 0 0;
+              }
+            .menu button:last-child {
+              border-radius:0 0 3px 3px;
+              border:none;
+              }
+            .menu button.active,
+            .menu button:hover {
+              background-color:#52a1d8;
+              }
+      </style>
+  </head>
+  
+  <body>
+<!-- Start Main Body -->
+    <div id="container">
+      <div id="sidebar" class="col-sm-10">
+     
+        <div id="map" class="map"></div>
+    <nav id='menu' class='menu'></nav>
+      
+        <div id='main_legend' class='legend'>
+            <div class="expand-one"><i class="glyphicon glyphicon-minus"></i>&nbsp;&nbsp;Legend</div> 
+          <div id='state-legend'>
+            <div class="content-one">
+            <div id='extent'>  
+            <div><span2 style='background-color: #2ecc71'></span2>Easy</div>
+            <div><span2 style='background-color: #17bebb'></span2>Moderate</div>
+            <div><span2 style='background-color: #d62246'></span2>Hard</div>
+            <div><span2 style='background-color: #4b1d3f'></span2>Very Hard</div>
+          </div>
+            </div>
+          </div>
+       </div>   
+        <a href='#' id='export'></a>
+      </div>
+
+      <div id="sidebar2" class="col-sm-2">
+         <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="card">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#overlay-layers">Let's Get This Party Started (Leg 1)
+                                </a>
+                            </div>
+                            <div id="overlay-layers" class="panel-collapse collapse in">
+                                <div class="panel-body" style="padding: 0px 15px;" id="hype">
+                                    <div class="col-sm-6">
+                                    <div class="panel panel-primary" id="cardpedpanel">
+                                    <div class="panel-heading" id="cardped">Van 1</div>
+                                    <div id='1a' class='listings'></div>
+                                    </div>
+                                    </div>
+                                     <div class="col-sm-6" >
+                                    <div class="panel panel-primary" id="cardpedpanel2">
+                                    <div class="panel-heading" id="cardped">Van 2</div>
+                                     <div id='1b' class='listings'></div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                
+        </div>
+
+      </div>  
+
+ </div>
+
+     <!-- Start About -->
+
+    <div class="modal fade" id="aboutModal">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color:#414140">
+               
+                <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color:white;margin-top:-13px;">&times;</button>
+     <div id="aboutInfo">
+    <div class="pull-right">
+        <img  class="dptitle" src="assets/img/nrider.png" />
+        </div>
+        <p class="dp_info">
+           
+          Hello there freinds of Michael Knight,<br> I am here to help you explore your race legs, exchange locations, and view vital inforamtion needed for your mission.<br><br> Below are a few tips to help you navigate the map:
+          <br><br>
+          - click a name in the sidebar (or an exchange number on the map) to zoom to that location and view info<br><br>
+          - click on the map to hide the info window<br><br>
+          - click K.I.T.T to zoom out to view the whole course<br><br>
+          - toggle the basemap by using the top-right buttons<br><br>
+          - use the fancy compass to rotate and pivet the map view (it's like you're driving a drone)<br><br>
+          - use scroll wheel on mouse to zoom in/out of map <br><br>
+          - click on Race Legs title to open/close runner lists<br>
+
+        </p>  
+                   
+            <div class="modal-footer" >
+              <div class="pull-right">   
+              <button type="button" class="btn btn-primary" data-dismiss="modal" id="dpbutton">Explore the Course</button>
+              </div>
+              <div class="pull-left">
+               <a href="https://www.runragnar.com/event-detail/relay/pa" target="_new"><img class="ecitylogo" src="assets/img/ragnar.png" /></a>
+              </div>
+          </div>
+                </div>
+         
+            </div> 
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+  </div>
+    <!-- /.modal -->
+    <!-- End About -->   
+
+     <!-- Trucking Modal Window -->
+        <div class="modal fade" id="infoModal">
+           <div class="modal-dialog">
+
+                <div class="modal-body" id="infosmall" style="padding:0px;background-color: white;margin:10px 10px 10px 10px;border-radius: 3px;">
+                    <h3 id="marker_title" style="color:white;text-align:center"></h3>  
+                    <p id="marker_content" style="padding: 10px;"></p>
+                </div>
+ 
+             </div>
+           </div>  
+         </div>  
+
+
+<script src="assets/js/app.js"></script>
+
+<!-- End Main Body -->
+  </body>
+</html>
